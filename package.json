@@ -1,0 +1,24 @@
+{
+  "dependencies": {
+    "express": "^4.17.1",
+    "http": "^0.0.1-security",
+    "husky": "^5.1.1",
+    "prettier": "^2.2.1",
+    "pretty-quick": "^3.1.0",
+    "socket.io": "^3.1.2"
+  },
+  "scripts": {
+    "pretty-quick": "pretty-quick"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  },
+  "name": "fasttyper-multiplayer",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/Jonny-exe/fasttyper-multiplayer.git",
+  "author": "Jonny-exe <69385502+Jonny-exe@users.noreply.github.com>",
+  "license": "MIT"
+}
