@@ -1,12 +1,14 @@
 {
   "dependencies": {
+    "bootstrap": "^4.6.0",
     "husky": "^5.1.1",
     "prettier": "^2.2.1",
-    "pretty-quick": "^3.1.0"
+    "pretty-quick": "^3.1.0",
+    "react-bootstrap": "^1.5.0"
   },
   "scripts": {
     "pretty-quick": "pretty-quick",
-    "setup" : "./setup.sh"
+    "setup": "./setup.sh"
   },
   "husky": {
     "hooks": {

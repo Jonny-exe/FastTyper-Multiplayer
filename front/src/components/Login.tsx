@@ -1,5 +1,9 @@
-import React, { useEffect, useState } from 'react'
-import { io } from 'socket.io-client'
+import React, { useState } from 'react'
+import Button from 'react-bootstrap/Button';
+import FormControl from 'react-bootstrap/FormControl';
+import InputGroup from 'react-bootstrap/InputGroup';
+
+
 
 interface Props {
 	socket: any,
@@ -7,14 +11,6 @@ interface Props {
 }
 
 const Login: React.FC<Props> = ({ socket, setAuthorized }) => {
-	useEffect(() => {
-		io.on("connection", socket => {
-			const users = []
-			for (let [id, socket] of io.of("/").sockets) {
-				
-			}
-		})
-	}, [])
 	const [name, setName] = useState("")
 	const login = () => {
 		socket.auth = { username: name };
@@ -23,8 +19,24 @@ const Login: React.FC<Props> = ({ socket, setAuthorized }) => {
 	}
 	return (
 		<div className="login">
-			<input type="text" placeholder="Login" value={name} onChange={e => setName(e.target.value)} className="login" />
-			<button className="loggin" onClick={login}> Login </button>
+			<p>
+				<h1> Please insert your username: </h1>
+			</p>
+			<InputGroup className="mb-3">
+				<FormControl
+					placeholder="Username"
+					aria-label="Username"
+					aria-describedby="basic-addon2"
+					value={name}
+					onChange={(e: any) => setName(e.target.value)}
+				/>
+				<InputGroup.Append>
+					<Button
+						onClick={login}
+						variant="outline-secondary"
+					> Login </Button>
+				</InputGroup.Append>
+			</InputGroup>
 		</div>
 	)
 }
