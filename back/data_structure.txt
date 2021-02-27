@@ -1,2 +1,12 @@
 users
-	- Score
+	- Name
+	- Pogress
+
+Text
+	- "The quote"
+	- "Lider"
+
+
+Rules:
+	- Can't start before everyone has finished or timout
+	- Lider will be the first one joining and if the leader it will be set randomly

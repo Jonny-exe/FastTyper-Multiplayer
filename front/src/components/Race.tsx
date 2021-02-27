@@ -1,6 +1,8 @@
-import React, { useCallback, useEffect } from 'react'
+import React, { useCallback, useEffect, useRef } from 'react'
 import Form from 'react-bootstrap/esm/Form'
+import Button from 'react-bootstrap/esm/Button'
 import { getNewQuote } from '../requests'
+import ProgressBar from 'react-bootstrap/esm/ProgressBar'
 
 interface Props {
 	socket: any,
@@ -12,6 +14,8 @@ interface User {
 }
 
 const Race: React.FC<Props> = ({ socket }) => {
+	const input: any = useRef(null)
+
 	const [quote, setQuote] = React.useState<string>("")
 	const [race, setRace] = React.useState<string>("")
 	const [text, setText] = React.useState<string>("")
@@ -19,10 +23,14 @@ const Race: React.FC<Props> = ({ socket }) => {
 	const [isCorrect, setIsCorrect] = React.useState<boolean>(true)
 	const [display, setDisplay] = React.useState<string>("")
 	const [users, setUsers] = React.useState<User[]>([])
+
 	const sendSocket = useCallback(() => {
 		console.log("HELLO")
-		socket.emit("new-operations", race)
 	}, [socket, race])
+
+	const focus = () => {
+		input.current.focus()
+	}
 
 
 	useEffect(() => {
@@ -38,7 +46,6 @@ const Race: React.FC<Props> = ({ socket }) => {
 			return
 		}
 		let correct = false
-		debugger
 		if (quote.indexOf(text) === 0) {
 			correct = true
 		}
@@ -53,11 +60,18 @@ const Race: React.FC<Props> = ({ socket }) => {
 	}, [])
 
 	const newQuote = async () => {
+		setText("")
 		const newQuote = await getNewQuote()
 		setQuote(newQuote)
+		focus()
 		setIsFinished(false)
 	}
 
+	const getProgress = React.useMemo(() => {
+		return isFinished ? 100 : (100 * (text.split(" ").length - 1)) / (quote.split(" ").length)
+	}, [text, quote, isFinished])
+	console.log(text.split(" ").length - 1,quote.split(" ").length - 1)
+	console.log((100 * (text.split(" ").length - 1)) / (quote.split(" ").length))
 
 	return (
 		<div className="race">
@@ -67,14 +81,19 @@ const Race: React.FC<Props> = ({ socket }) => {
 				<Form.Label> <h2>{quote}</h2> </Form.Label>
 				<Form.Control
 					readOnly={isFinished}
+					value={text}
 					onChange={(e: any) => setText(e.target.value)}
 					as="textarea"
-					className={`${isCorrect ? 'correct' : 'incorrect'}`}
+					className={`${isFinished ? "" : isCorrect ? 'correct' : 'incorrect'}`}
 					rows={3}
+					ref={input}
 				/>
 			</Form.Group>
+
+			<ProgressBar animated className="bar" now={getProgress} />
+
 			{/* <button onClick={sendSocket} > Hello </button> */}
-			<button onClick={newQuote} > NEW QUOTE </button>
+			<Button onClick={newQuote} variant="primary"> New quote </Button>
 			{/* <h1> Race: {race} </h1>
 			<h1> Display: {display} </h1>
 			{users.map(({ userID, username }, index) => (
@@ -87,6 +106,8 @@ const Race: React.FC<Props> = ({ socket }) => {
 			{
 				isFinished ? <h1> GG </h1> : null
 			}
+			<hr></hr>
+			{/* {user} */}
 		</div >
 	)
 }

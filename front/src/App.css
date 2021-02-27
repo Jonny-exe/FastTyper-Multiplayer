@@ -2,6 +2,7 @@
 .App {
   /* font-family: Arial, Helvetica, sans-serif; */
   text-align: center;
+  border-color: grey;
   /* --primaryColor: rgba(46, 46, 46, 0.938); */
   /* -webkit-appearance: none; */ 
 }
@@ -96,4 +97,8 @@ button.login, input.login {
 
 .incorrect, .incorrect:focus {
   background-color: rgb(236, 128, 128);
+}
+
+.bar {
+  margin: 1%;
 }
