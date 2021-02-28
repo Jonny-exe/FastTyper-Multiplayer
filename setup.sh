@@ -1,10 +1,10 @@
-echo "Install base"
+echo "## Install base"
 yarn install
 
-echo "Install back"
+echo "## Install back"
 cd back
 yarn install
 
-echo "Install front"
+echo "## Install front"
 cd ../front
 yarn install
