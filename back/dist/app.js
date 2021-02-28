@@ -57,24 +57,25 @@ io.use(function (socket, next) {
     next();
 });
 io.on("connection", function (socket) { return __awaiter(void 0, void 0, void 0, function () {
-    var username, users;
+    var username, isLider, users, sendInfo;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 username = socket.username;
                 console.log(username + " connected");
-                db_1.query("insert into users (username, progress) values ('" + username + "', 0)");
-                return [4 /*yield*/, db_1.query("select username, progress from users")];
+                return [4 /*yield*/, db_1.query("insert into users (username, progress) values ('" + username + "', 0)")];
             case 1:
-                users = _a.sent();
-                if (!(users.length === 0)) return [3 /*break*/, 4];
-                return [4 /*yield*/, db_1.query("remove from text")];
-            case 2:
                 _a.sent();
-                return [4 /*yield*/, db_1.query("insert into text (text, lider) values ('',  '" + username + "')")];
+                return [4 /*yield*/, db_1.query("select username, progress from users")];
+            case 2:
+                users = _a.sent();
+                if (!(users.length === 1)) return [3 /*break*/, 4];
+                return [4 /*yield*/, db_1.query("update text set lider = '" + username + "', quote = ''")];
             case 3:
                 _a.sent();
-                io.emit("text", { lider: username, quote: "" });
+                sendInfo = { lider: username, quote: "" };
+                isLider = true;
+                io.emit("text", sendInfo);
                 _a.label = 4;
             case 4:
                 io.emit("users", users);
@@ -85,7 +86,8 @@ io.on("connection", function (socket) { return __awaiter(void 0, void 0, void 0,
                         return __generator(this, function (_b) {
                             switch (_b.label) {
                                 case 0:
-                                    db_1.query("update users set progress = " + progress + " where username = " + username);
+                                    db_1.query("update users set progress = " + progress + " where username = '" + username + "'");
+                                    console.log(progress);
                                     return [4 /*yield*/, db_1.query("select username, progress from users")];
                                 case 1:
                                     users = _b.sent();
@@ -99,12 +101,37 @@ io.on("connection", function (socket) { return __awaiter(void 0, void 0, void 0,
                     var quote = _a.quote, lider = _a.lider;
                     return __awaiter(void 0, void 0, void 0, function () {
                         return __generator(this, function (_b) {
-                            db_1.query("update users set quote = " + quote + " where lider = " + lider);
+                            db_1.query("update text set quote = " + quote + " where lider = " + lider);
                             io.emit("text", { quote: quote, lider: lider });
                             return [2 /*return*/];
                         });
                     });
                 });
+                socket.on("disconnect", function () { return __awaiter(void 0, void 0, void 0, function () {
+                    var newLider, newUsers;
+                    return __generator(this, function (_a) {
+                        switch (_a.label) {
+                            case 0: return [4 /*yield*/, db_1.query("delete from users where username = '" + username + "'")];
+                            case 1:
+                                _a.sent();
+                                console.log(username + " disconnected");
+                                if (!(isLider == true)) return [3 /*break*/, 4];
+                                return [4 /*yield*/, db_1.query("select username from users where username != '" + username + "'")];
+                            case 2:
+                                newLider = _a.sent();
+                                return [4 /*yield*/, db_1.query("update text set lider = '" + newLider + "'")];
+                            case 3:
+                                _a.sent();
+                                io.emit("text", { lider: newLider, quote: "" });
+                                _a.label = 4;
+                            case 4: return [4 /*yield*/, db_1.query("select username, progress from users")];
+                            case 5:
+                                newUsers = _a.sent();
+                                io.emit("users", newUsers);
+                                return [2 /*return*/];
+                        }
+                    });
+                }); });
                 return [2 /*return*/];
         }
     });

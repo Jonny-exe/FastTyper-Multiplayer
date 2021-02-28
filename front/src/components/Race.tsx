@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState, useMemo } from 'react'
 import Form from 'react-bootstrap/esm/Form'
 import Button from 'react-bootstrap/esm/Button'
 import { getNewQuote } from '../requests'
@@ -14,82 +14,109 @@ interface User {
 	progress: number
 }
 
+interface Text {
+	quote: string,
+	lider: string
+}
+
 interface Self {
 	username: string,
 	progress: number,
-	isFinished: boolean,
-	isLeader: boolean
+	isLider: boolean
 }
 
 const Race: React.FC<Props> = ({ socket, username }) => {
 	const input: any = useRef(null)
 
-	const [quote, setQuote] = React.useState<string>("")
-	const [race, setRace] = React.useState<string>("")
-	const [user, setUser] = React.useState<Self>({ username, progress: 0, isFinished: false, isLeader: false })
-	const [text, setText] = React.useState<string>("")
-	const [isCorrect, setIsCorrect] = React.useState<boolean>(true)
-	const [users, setUsers] = React.useState<User[]>([])
-
-	const sendSocket = useCallback(() => {
-		socket.emit("new-opeartions")
-		console.log("HELLO")
-	}, [socket, race])
+	const [user, setUser] = useState<Self>({ username, progress: 0, isLider: false })
+	const [text, setText] = useState<Text>({ quote: "", lider: "" })
+	const [myText, setMyText] = useState<string>("")
+	const [isCorrect, setIsCorrect] = useState<boolean>(true)
+	const [isFinished, setIsFinished] = useState<boolean>(false)
+	const [users, setUsers] = useState<User[]>([])
 
 	const focus = () => {
 		input.current.focus()
 	}
 
-
 	useEffect(() => {
-		socket.on("new-remote-operation", (users: User[]) => {
-			setUsers(users)
-			debugger
+		socket.on("text", (text: Text) => {
+			setText(text)
+			let { lider, quote } = text
+			if (lider === user.username) {
+				setUser({ ...user, isLider: true })
+			} else if (quote !== "") {
+				setIsFinished(false)
+			}
+			setMyText("")
 		})
 	}, [socket])
 
 	useEffect(() => {
-		if (quote === text) {
-			setUser({ ...user, isFinished: true })
+		socket.on("users", (users: User[]) => {
+			setUsers(users)
+		})
+	}, [socket])
+
+	useEffect(() => {
+		if (text.quote === myText) {
+			setIsFinished(true)
 			return
 		}
 		let correct = false
-		if (quote.indexOf(text) === 0) {
+		if (text.quote.indexOf(myText) === 0) {
 			correct = true
 		}
 		setIsCorrect(correct)
-	}, [text, quote, user]) // Maybe this is bad only "TEXT"
+	}, [myText]) // Maybe this is bad only "TEXT"
 
 	useEffect(() => {
-		socket.on("new-remote-operations", (data: string) => {
-			debugger
-		})
-	}, [socket])
+		socket.emit("update-progress", { progress: user.progress, username })
+	}, [user.progress, socket, username])
+
+	useEffect(() => {
+		socket.emit("update-text", text)
+	}, [text.quote, socket])
 
 	const newQuote = async () => {
-		setText("")
+		setMyText("")
 		const newQuote = await getNewQuote()
-		setQuote(newQuote)
+		setText({ ...text, quote: newQuote })
 		focus()
-		setUser({ ...user, isFinished: false })
+		setIsFinished(false)
 	}
 
-	const getProgress = React.useMemo(() => {
-		return isFinished ? 100 : (100 * (text.split(" ").length - 1)) / (quote.split(" ").length)
-	}, [text, quote, isFinished])
-	console.log(text.split(" ").length - 1, quote.split(" ").length - 1)
-	console.log((100 * (text.split(" ").length - 1)) / (quote.split(" ").length))
+	const haveUsersFinished = useMemo(() => {
+		let finished: boolean = true
+		if (text.quote === "") return true
+		users.every(({progress}: User) => {
+			if (progress != 100) {
+				finished = false
+				return false
+			}
+			return true
+		})
+		debugger
+		return finished
+	}, [users, text.quote])
+
+	useEffect(() => {
+		const progress = Math.floor(isFinished ? 100 : (100 * (myText.split(" ").length - 1)) / (text.quote.split(" ").length))
+		setUser({ ...user, progress })
+	}, [myText, text.quote, isFinished])
+
+	console.log(haveUsersFinished)
 
 	return (
 		<div className="race">
 			<Form.Group
-				onChange={(e: any) => setRace(e.target.value)}
-				controlId="exampleForm.ControlTextarea1">
-				<Form.Label> <h2>{quote}</h2> </Form.Label>
+				// onChange={(e: any) => setRace(e.target.value)}
+				controlId="exampleForm.ControlmyTextarea1">
+				<Form.Label> <h2>{text.quote}</h2> </Form.Label>
 				<Form.Control
 					readOnly={isFinished}
-					value={text}
-					onChange={(e: any) => setText(e.target.value)}
+					value={myText}
+					onChange={(e: any) => setMyText(e.target.value)}
 					as="textarea"
 					className={`${isFinished ? "" : isCorrect ? 'correct' : 'incorrect'}`}
 					rows={3}
@@ -97,14 +124,20 @@ const Race: React.FC<Props> = ({ socket, username }) => {
 				/>
 			</Form.Group>
 
-			<ProgressBar animated className="bar" now={getProgress} />
-
-			<Button onClick={newQuote} variant="primary"> New quote </Button>
+			<ProgressBar className="bar" now={user.progress} />
+			<Button disabled={!user.isLider || !haveUsersFinished} onClick={newQuote} variant="primary"> New quote </Button>
 			{
 				isFinished ? <h1> GG </h1> : null
 			}
 			<hr></hr>
-			{/* {user} */}
+			{
+				users.map(({ username, progress }: User, index: number) => (
+					<div key={index}>
+						<h2> Username: {username} </h2>
+						<ProgressBar className="bar" now={progress} />
+					</div>
+				))
+			}
 		</div >
 	)
 }

@@ -21,9 +21,7 @@ const Login: React.FC<Props> = ({ socket, setAuthorized, setUsername }) => {
 	}
 	return (
 		<div className="login">
-			<p>
-				<h1> Please insert your username: </h1>
-			</p>
+			<h1> Please insert your username: </h1>
 			<InputGroup className="mb-3">
 				<FormControl
 					placeholder="Username"

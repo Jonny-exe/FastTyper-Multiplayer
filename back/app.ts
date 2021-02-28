@@ -26,27 +26,42 @@ io.use((socket: any, next: any) => {
 
 io.on("connection", async (socket: any) => {
   const username = socket.username
+  let isLider: boolean
   console.log(`${username} connected`)
-  query(`insert into users (username, progress) values ('${username}', 0)`)
+  await query(`insert into users (username, progress) values ('${username}', 0)`)
 
   const users = await query("select username, progress from users")
-  if (users.length === 0) {
-    await query("remove from text")
-    await query(`insert into text (text, lider) values ('',  '${username}')`)
-    io.emit("text", { lider: username, quote: "" })
+  if (users.length === 1) {
+    await query(`update text set lider = '${username}', quote = ''`)
+    const sendInfo: Text = { lider: username, quote: "" }
+    isLider = true
+    io.emit("text", sendInfo)
   }
 
   io.emit("users", users)
 
   socket.on("update-progress", async ({ username, progress }: User) => {
-    query(`update users set progress = ${progress} where username = ${username}`)
+    query(`update users set progress = ${progress} where username = '${username}'`)
+    console.log(progress)
     const users = await query("select username, progress from users")
     io.emit("users", users)
   })
 
   socket.on("update-text", async ({ quote, lider }: Text) => {
-    query(`update users set quote = ${quote} where lider = ${lider}`)
-    io.emit("text", {quote, lider})
+    query(`update text set quote = ${quote} where lider = ${lider}`)
+    io.emit("text", { quote, lider })
+  })
+
+  socket.on("disconnect", async () => {
+    await query(`delete from users where username = '${username}'`)
+    console.log(`${username} disconnected`)
+    if (isLider == true) {
+      const newLider = await query(`select username from users where username != '${username}'`)
+      await query(`update text set lider = '${newLider}'`)
+      io.emit("text", {lider: newLider, quote: ""})
+    }
+    const newUsers = await query(`select username, progress from users`)
+    io.emit("users", newUsers)
   })
 });
 
