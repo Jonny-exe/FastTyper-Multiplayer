@@ -39,7 +39,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var db_1 = require("./db");
 var app = require("express")();
 var http = require("http").createServer(app);
-require('source-map-support').install();
+require("source-map-support").install();
 var io = require("socket.io")(http, {
     cors: {
         origin: "http://localhost:3000",

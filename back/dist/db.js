@@ -41,15 +41,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.query = void 0;
 var env_1 = __importDefault(require("./env"));
-var Client = require('pg').Client;
+var Client = require("pg").Client;
 var pgtools = require("pgtools");
 var client = new Client(env_1.default);
 var setup = function () { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
         client
             .connect()
-            .then(function () { return console.log('connected'); })
-            .catch(function (err) { return console.error('connection error', err.stack); });
+            .then(function () { return console.log("connected"); })
+            .catch(function (err) { return console.error("connection error", err.stack); });
         client.query("SELECT NOW()");
         return [2 /*return*/];
     });

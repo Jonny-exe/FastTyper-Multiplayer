@@ -1,12 +1,10 @@
-
 .App {
   /* font-family: Arial, Helvetica, sans-serif; */
   text-align: center;
   border-color: grey;
   /* --primaryColor: rgba(46, 46, 46, 0.938); */
-  /* -webkit-appearance: none; */ 
+  /* -webkit-appearance: none; */
 }
-
 
 /* .submit::-moz-focus-inner {
   border: 0;
@@ -74,7 +72,7 @@ div.login {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-} 
+}
 
 div.race {
   padding: 1%;
@@ -91,11 +89,13 @@ button.login, input.login {
   -webkit-appearance: none;
 */
 
-.correct ,.correct:focus{
+.correct,
+.correct:focus {
   background-color: rgb(96, 246, 96);
 }
 
-.incorrect, .incorrect:focus {
+.incorrect,
+.incorrect:focus {
   background-color: rgb(236, 128, 128);
 }
 

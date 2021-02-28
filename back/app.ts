@@ -1,10 +1,10 @@
-import { updateLanguageServiceSourceFile } from 'typescript';
-import { User, Text } from './types'
-import { query } from './db'
+import { updateLanguageServiceSourceFile } from "typescript"
+import { User, Text } from "./types"
+import { query } from "./db"
 
 const app = require("express")()
 const http = require("http").createServer(app)
-require('source-map-support').install();
+require("source-map-support").install()
 
 const io = require("socket.io")(http, {
   cors: {
@@ -28,7 +28,9 @@ io.on("connection", async (socket: any) => {
   const username = socket.username
   let isLider: boolean
   console.log(`${username} connected`)
-  await query(`insert into users (username, progress) values ('${username}', 0)`)
+  await query(
+    `insert into users (username, progress) values ('${username}', 0)`
+  )
 
   const users = await query("select username, progress from users")
   if (users.length === 1) {
@@ -41,7 +43,9 @@ io.on("connection", async (socket: any) => {
   io.emit("users", users)
 
   socket.on("update-progress", async ({ username, progress }: User) => {
-    query(`update users set progress = ${progress} where username = '${username}'`)
+    query(
+      `update users set progress = ${progress} where username = '${username}'`
+    )
     console.log(progress)
     const users = await query("select username, progress from users")
     io.emit("users", users)
@@ -56,17 +60,16 @@ io.on("connection", async (socket: any) => {
     await query(`delete from users where username = '${username}'`)
     console.log(`${username} disconnected`)
     if (isLider == true) {
-      const newLider = await query(`select username from users where username != '${username}'`)
+      const newLider = await query(
+        `select username from users where username != '${username}'`
+      )
       await query(`update text set lider = '${newLider}'`)
-      io.emit("text", {lider: newLider, quote: ""})
+      io.emit("text", { lider: newLider, quote: "" })
     }
     const newUsers = await query(`select username, progress from users`)
     io.emit("users", newUsers)
   })
-});
-
-
-
+})
 
 http.listen(4000, () => {
   console.log("listening on *:4000")
