@@ -58,7 +58,7 @@ const Race: React.FC<Props> = ({ socket, username }) => {
 
   useEffect(() => {
     socket.on("users", (users: User[]) => {
-      setUsers(users)
+				setUsers(users)
     })
   }, [socket])
 
