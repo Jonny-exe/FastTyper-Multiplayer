@@ -1,0 +1,14 @@
+[Unit]
+Description="Fasttyper multiplayer"
+
+[Service]
+ExecStart=/usr/bin/node app.js
+WorkingDirectory=/home/ubuntu/Documents/GitHub/fasttyper-multiplayer/back
+Restart=always
+RestartSec=10
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=MyApp
+
+[Install]
+WantedBy=multi-user.target

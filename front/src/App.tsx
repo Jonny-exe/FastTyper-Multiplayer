@@ -3,14 +3,9 @@ import "./App.css"
 import { io } from "socket.io-client"
 import Login from "./components/Login"
 import Race from "./components/Race"
+import SOCKET_URL, { CREDENTIALS } from "./env"
 
-const socket = io("http://localhost:4000", {
-  withCredentials: true,
-  autoConnect: false,
-  extraHeaders: {
-    "my-custom-header": "abcd",
-  },
-})
+const socket = io(SOCKET_URL, CREDENTIALS)
 
 const App = () => {
   const [isAuthorized, setAuthorized] = useState(false)

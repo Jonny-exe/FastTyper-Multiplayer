@@ -1,18 +1,14 @@
 import { updateLanguageServiceSourceFile } from "typescript"
 import { User, Text } from "./types"
 import { query } from "./db"
+import { CORS } from "./env"
 
 const app = require("express")()
 const http = require("http").createServer(app)
 require("source-map-support").install()
 
 const io = require("socket.io")(http, {
-  cors: {
-    origin: "http://localhost:3000",
-    methods: ["GET", "POST"],
-    allowedHeaders: ["my-custom-header"],
-    credentials: true,
-  },
+  cors: CORS,
 })
 
 io.use((socket: any, next: any) => {
