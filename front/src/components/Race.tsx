@@ -60,7 +60,7 @@ const Race: React.FC<Props> = ({ socket, username }) => {
     socket.on("users", (users: User[]) => {
       setUsers(users)
     })
-  }, [socket])
+				}, [socket])
 
   useEffect(() => {
     if (text.quote === myText) {
