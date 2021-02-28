@@ -7,15 +7,17 @@ import InputGroup from 'react-bootstrap/InputGroup';
 
 interface Props {
 	socket: any,
-	setAuthorized: (isAuthorized: boolean) => void
+	setAuthorized: (isAuthorized: boolean) => void,
+	setUsername: (username: string) => void
 }
 
-const Login: React.FC<Props> = ({ socket, setAuthorized }) => {
+const Login: React.FC<Props> = ({ socket, setAuthorized, setUsername }) => {
 	const [name, setName] = useState("")
 	const login = () => {
 		socket.auth = { username: name };
 		socket.connect()
 		setAuthorized(true)
+		setUsername(name)
 	}
 	return (
 		<div className="login">

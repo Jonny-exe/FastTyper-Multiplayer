@@ -1,6 +1,11 @@
+import { updateLanguageServiceSourceFile } from 'typescript';
+import { User, Text } from './types'
+import { query } from './db'
+
 const app = require("express")()
 const http = require("http").createServer(app)
-// server-side
+require('source-map-support').install();
+
 const io = require("socket.io")(http, {
   cors: {
     origin: "http://localhost:3000",
@@ -19,39 +24,34 @@ io.use((socket: any, next: any) => {
   next()
 })
 
-interface User {
-  username: string,
-  userID: number
-}
+io.on("connection", async (socket: any) => {
+  const username = socket.username
+  console.log(`${username} connected`)
+  query(`insert into users (username, progress) values ('${username}', 0)`)
 
-io.on("connection", (socket: any) => {
-  socket.on("disconnect", () => {
-    io.emit("users", getUsers())
-    console.log("Disconnect")
-  })
-
-  socket.on("new-operations", (data: string) => {
-    console.log("Data: ", data)
-    io.emit("new-remote-operations", data)
-  })
-
-  console.log("Connection", socket.username)
-  const getUsers = () => {
-    const users: User[] = [];
-    const sockets = io.of("/").sockets
-    sockets.forEach((socket: any) => {
-      users.push({
-        username: socket.username,
-        userID: socket.id
-      })
-    })
-    return users
+  const users = await query("select username, progress from users")
+  if (users.length === 0) {
+    await query("remove from text")
+    await query(`insert into text (text, lider) values ('',  '${username}')`)
+    io.emit("text", { lider: username, quote: "" })
   }
-  io.emit("users", getUsers());
+
+  io.emit("users", users)
+
+  socket.on("update-progress", async ({ username, progress }: User) => {
+    query(`update users set progress = ${progress} where username = ${username}`)
+    const users = await query("select username, progress from users")
+    io.emit("users", users)
+  })
+
+  socket.on("update-text", async ({ quote, lider }: Text) => {
+    query(`update users set quote = ${quote} where lider = ${lider}`)
+    io.emit("text", {quote, lider})
+  })
 });
 
 
-// notify existing users
+
 
 http.listen(4000, () => {
   console.log("listening on *:4000")

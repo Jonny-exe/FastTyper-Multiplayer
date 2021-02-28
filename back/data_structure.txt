@@ -1,10 +1,11 @@
-users
-	- Name
-	- Pogress
+Tables:
+	Users:
+		- Name
+		- Pogress
 
-Text
-	- "The quote"
-	- "Lider"
+	Text
+		- "The quote"
+		- "Lider"
 
 
 Rules:

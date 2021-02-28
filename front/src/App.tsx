@@ -14,12 +14,13 @@ const socket = io('http://localhost:4000', {
 
 const App = () => {
   const [isAuthorized, setAuthorized] = useState(false)
+  const [username, setUsername] = React.useState<string>("")
   return (
     <div className="App">
       {
         isAuthorized ?
-          <Race socket={socket} /> :
-          <Login socket={socket} setAuthorized={setAuthorized} />
+          <Race socket={socket} username={username} /> :
+          <Login socket={socket} setUsername={setUsername} setAuthorized={setAuthorized} />
       }
     </div>
   );
