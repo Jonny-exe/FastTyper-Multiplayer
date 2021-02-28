@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "bootstrap": "^4.6.0",
+    "husky": "^5.1.1",
     "prettier": "^2.2.1",
     "pretty-quick": "^3.1.0",
     "react-bootstrap": "^1.5.0"
@@ -21,7 +22,6 @@
   "author": "Jonny-exe <69385502+Jonny-exe@users.noreply.github.com>",
   "license": "MIT",
   "devDependencies": {
-      "husky": "^5.1.1",
     "nodemon": "^2.0.7"
   }
 }
