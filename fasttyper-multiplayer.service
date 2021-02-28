@@ -2,7 +2,7 @@
 Description="Fasttyper multiplayer"
 
 [Service]
-ExecStart=/usr/bin/node app.js
+ExecStart=/usr/bin/node dist/app.js
 WorkingDirectory=/home/ubuntu/Documents/GitHub/fasttyper-multiplayer/back
 Restart=always
 RestartSec=10
