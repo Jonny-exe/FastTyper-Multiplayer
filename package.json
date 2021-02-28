@@ -8,7 +8,8 @@
   },
   "scripts": {
     "pretty-quick": "pretty-quick",
-    "setup": "./setup.sh"
+    "setup": "./setup.sh",
+    "postinstall": "husky install"
   },
   "husky": {
     "hooks": {
