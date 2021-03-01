@@ -8,3 +8,4 @@ yarn install
 echo "## Install front"
 cd ../front
 yarn install
+yarn build
