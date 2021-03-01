@@ -221,17 +221,29 @@ io.on("connection", function (socket) {
               lider = _a.lider
             return __awaiter(void 0, void 0, void 0, function () {
               return __generator(this, function (_b) {
-                db_1.query(
-                  "update text set quote = " + quote + " where lider = " + lider
-                )
-                io.emit("text", { quote: quote, lider: lider })
-                return [2 /*return*/]
+                switch (_b.label) {
+                  case 0:
+                    return [
+                      4 /*yield*/,
+                      db_1.query(
+                        "update text set quote = '" +
+                          quote +
+                          "' where lider = '" +
+                          lider +
+                          "'"
+                      ),
+                    ]
+                  case 1:
+                    _b.sent()
+                    io.emit("text", { quote: quote, lider: lider })
+                    return [2 /*return*/]
+                }
               })
             })
           })
           socket.on("disconnect", function () {
             return __awaiter(void 0, void 0, void 0, function () {
-              var newLider, newUsers
+              var newLider, newLider_1, e_1, newUsers
               return __generator(this, function (_a) {
                 switch (_a.label) {
                   case 0:
@@ -244,31 +256,41 @@ io.on("connection", function (socket) {
                   case 1:
                     _a.sent()
                     console.log(username + " disconnected")
-                    if (!(isLider == true)) return [3 /*break*/, 4]
+                    if (!(isLider == true)) return [3 /*break*/, 7]
+                    newLider = void 0
+                    _a.label = 2
+                  case 2:
+                    _a.trys.push([2, 4, , 5])
                     return [
                       4 /*yield*/,
                       db_1.query(
-                        "select username from users where username != '" +
+                        "select username from users where username <> '" +
                           username +
                           "'"
                       ),
                     ]
-                  case 2:
-                    newLider = _a.sent()
+                  case 3:
+                    newLider_1 = _a.sent()[0].username
+                    return [3 /*break*/, 5]
+                  case 4:
+                    e_1 = _a.sent()
+                    newLider = ""
+                    return [3 /*break*/, 5]
+                  case 5:
                     return [
                       4 /*yield*/,
                       db_1.query("update text set lider = '" + newLider + "'"),
                     ]
-                  case 3:
+                  case 6:
                     _a.sent()
                     io.emit("text", { lider: newLider, quote: "" })
-                    _a.label = 4
-                  case 4:
+                    _a.label = 7
+                  case 7:
                     return [
                       4 /*yield*/,
                       db_1.query("select username, progress from users"),
                     ]
-                  case 5:
+                  case 8:
                     newUsers = _a.sent()
                     io.emit("users", newUsers)
                     return [2 /*return*/]
