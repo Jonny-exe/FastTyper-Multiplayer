@@ -243,7 +243,7 @@ io.on("connection", function (socket) {
           })
           socket.on("disconnect", function () {
             return __awaiter(void 0, void 0, void 0, function () {
-              var newLider, newLider_1, e_1, newUsers
+              var newLider, newUsers
               return __generator(this, function (_a) {
                 switch (_a.label) {
                   case 0:
@@ -256,11 +256,7 @@ io.on("connection", function (socket) {
                   case 1:
                     _a.sent()
                     console.log(username + " disconnected")
-                    if (!(isLider == true)) return [3 /*break*/, 7]
-                    newLider = void 0
-                    _a.label = 2
-                  case 2:
-                    _a.trys.push([2, 4, , 5])
+                    if (!(isLider == true)) return [3 /*break*/, 4]
                     return [
                       4 /*yield*/,
                       db_1.query(
@@ -269,28 +265,23 @@ io.on("connection", function (socket) {
                           "'"
                       ),
                     ]
-                  case 3:
-                    newLider_1 = _a.sent()[0].username
-                    return [3 /*break*/, 5]
-                  case 4:
-                    e_1 = _a.sent()
-                    newLider = ""
-                    return [3 /*break*/, 5]
-                  case 5:
+                  case 2:
+                    newLider = _a.sent()
+                    newLider = newLider.length > 0 ? newLider[0].username : ""
                     return [
                       4 /*yield*/,
                       db_1.query("update text set lider = '" + newLider + "'"),
                     ]
-                  case 6:
+                  case 3:
                     _a.sent()
                     io.emit("text", { lider: newLider, quote: "" })
-                    _a.label = 7
-                  case 7:
+                    _a.label = 4
+                  case 4:
                     return [
                       4 /*yield*/,
                       db_1.query("select username, progress from users"),
                     ]
-                  case 8:
+                  case 5:
                     newUsers = _a.sent()
                     io.emit("users", newUsers)
                     return [2 /*return*/]

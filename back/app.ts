@@ -56,14 +56,10 @@ io.on("connection", async (socket: any) => {
     await query(`delete from users where username = '${username}'`)
     console.log(`${username} disconnected`)
     if (isLider == true) {
-      let newLider
-      try {
-        const [{ username: newLider }] = await query(
-          `select username from users where username <> '${username}'`
-        )
-      } catch (e) {
-        newLider = ""
-      }
+      let newLider = await query(
+        `select username from users where username <> '${username}'`
+      )
+      newLider = newLider.length > 0 ? newLider[0].username : ""
       await query(`update text set lider = '${newLider}'`)
       io.emit("text", { lider: newLider, quote: "" })
     }
