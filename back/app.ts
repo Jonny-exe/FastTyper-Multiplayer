@@ -1,4 +1,3 @@
-import { updateLanguageServiceSourceFile } from "typescript"
 import { User, Text } from "./types"
 import { query } from "./db"
 import { CORS } from "./env"
@@ -7,9 +6,7 @@ const app = require("express")()
 const http = require("http").createServer(app)
 require("source-map-support").install()
 
-const io = require("socket.io")(http, {
-  cors: CORS,
-})
+const io = require("socket.io")(http, CORS)
 
 io.use((socket: any, next: any) => {
   const username = socket.handshake.auth.username
