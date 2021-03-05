@@ -1,7 +1,5 @@
-import { Text, User } from "./types"
-import clientInfoDB, { clientInfo } from "./env"
+import clientInfoDB from "./env"
 const { Client } = require("pg")
-const pgtools = require("pgtools")
 const client = new Client(clientInfoDB)
 
 const setup = async () => {
@@ -13,9 +11,14 @@ const setup = async () => {
   client.query("SELECT NOW()")
 }
 
-const query = async (query: string) => {
-  const { rows } = await client.query(query)
-  return rows
+const query = async (query: string, params: any[] = []) => {
+  try {
+    // const { rows } = params.length > 0 ? await client.query(query, params) : await client.query(query)
+    const { rows } = await client.query(query, params)
+    return rows
+  } catch (err) {
+    console.error("Error querying") //Happens every time a var is empty ""
+  }
 }
 
 setup()

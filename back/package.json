@@ -16,6 +16,7 @@
     "start": "(tsc --watch&) && nodemon dist/app.js"
   },
   "devDependencies": {
+    "@types/pg": "^7.14.11",
     "source-map-support": "^0.5.19"
   }
 }

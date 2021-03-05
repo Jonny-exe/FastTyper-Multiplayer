@@ -138,9 +138,7 @@ var env_1 = require("./env")
 var app = require("express")()
 var http = require("http").createServer(app)
 require("source-map-support").install()
-var io = require("socket.io")(http, {
-  cors: env_1.CORS,
-})
+var io = require("socket.io")(http, env_1.CORS)
 io.use(function (socket, next) {
   var username = socket.handshake.auth.username
   if (!username) {
@@ -160,9 +158,8 @@ io.on("connection", function (socket) {
           return [
             4 /*yield*/,
             db_1.query(
-              "insert into users (username, progress) values ('" +
-                username +
-                "', 0)"
+              "insert into users (username, progress) values ($1, 0)",
+              [username]
             ),
           ]
         case 1:
@@ -176,9 +173,9 @@ io.on("connection", function (socket) {
           if (!(users.length === 1)) return [3 /*break*/, 4]
           return [
             4 /*yield*/,
-            db_1.query(
-              "update text set lider = '" + username + "', quote = ''"
-            ),
+            db_1.query("update text set lider = $1::text, quote = ''", [
+              username,
+            ]),
           ]
         case 3:
           _a.sent()
@@ -197,13 +194,9 @@ io.on("connection", function (socket) {
                 switch (_b.label) {
                   case 0:
                     db_1.query(
-                      "update users set progress = " +
-                        progress +
-                        " where username = '" +
-                        username +
-                        "'"
+                      "update users set progress = $1::bigint where username = $2::text",
+                      [progress, username]
                     )
-                    console.log(progress)
                     return [
                       4 /*yield*/,
                       db_1.query("select username, progress from users"),
@@ -226,11 +219,8 @@ io.on("connection", function (socket) {
                     return [
                       4 /*yield*/,
                       db_1.query(
-                        "update text set quote = '" +
-                          quote +
-                          "' where lider = '" +
-                          lider +
-                          "'"
+                        "update text set quote = $1::text where lider = $2::text",
+                        [quote, lider]
                       ),
                     ]
                   case 1:
@@ -250,7 +240,8 @@ io.on("connection", function (socket) {
                     return [
                       4 /*yield*/,
                       db_1.query(
-                        "delete from users where username = '" + username + "'"
+                        "delete from users where username = $1::text",
+                        [username]
                       ),
                     ]
                   case 1:
@@ -260,9 +251,8 @@ io.on("connection", function (socket) {
                     return [
                       4 /*yield*/,
                       db_1.query(
-                        "select username from users where username <> '" +
-                          username +
-                          "'"
+                        "select username from users where username <> $1::text",
+                        [username]
                       ),
                     ]
                   case 2:
@@ -270,7 +260,9 @@ io.on("connection", function (socket) {
                     newLider = newLider.length > 0 ? newLider[0].username : ""
                     return [
                       4 /*yield*/,
-                      db_1.query("update text set lider = '" + newLider + "'"),
+                      db_1.query("update text set lider = $1::text", [
+                        newLider,
+                      ]),
                     ]
                   case 3:
                     _a.sent()
