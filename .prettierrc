@@ -1,6 +1,6 @@
 {
-  "tabWidth": 2,
-  "useTabs": false,
-  "htmlWhitespaceSensitivity": "ignore",
-  "semi": false
+	"tabWidth": 2,
+	"useTabs": true,
+	"htmlWhitespaceSensitivity": "ignore",
+	"semi": false
 }
