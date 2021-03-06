@@ -22,7 +22,7 @@ const Race: React.FC<Props> = ({ socket, username }) => {
 	})
 	const [text, setText] = useState<Text>({ quote: "", lider: "" })
 	const [myFullText, setMyFullText] = useState<string>("")
-	const [myWord, setMyWord] = useState<string>("")
+	const [myText, setMyText] = useState<string>("")
 	const [isCorrect, setIsCorrect] = useState<boolean>(true)
 	const [isFinished, setIsFinished] = useState<boolean>(false)
 	const [users, setUsers] = useState<User[]>([])
@@ -52,39 +52,37 @@ const Race: React.FC<Props> = ({ socket, username }) => {
 	}, [socket])
 
 	useEffect(() => {
-		//TODO: make this cleaner
 		let correct: boolean = false
+		debugger
 		switch (editorType) {
 			case "word":
-				const writtenText = myFullText + myWord
+				const writtenText = myFullText + myText
 				if (text.quote === writtenText) {
-					setMyFullText((myFullText) => myFullText + myWord)
+					setMyFullText((myFullText) => myFullText + myText)
 					setIsFinished(true)
 					return
 				}
 				if (
-					myWord[myWord.length - 1] === " " &&
+					myText[myText.length - 1] === " " &&
 					text.quote.indexOf(writtenText) === 0
 				) {
-					setMyFullText((myFullText) => myFullText + myWord)
-					setMyWord("")
+					setMyFullText((myFullText) => myFullText + myText)
+					setMyText("")
 				}
 				correct = text.quote.indexOf(writtenText) === 0
-				setIsCorrect(correct)
 				break
 
 			case "free":
-				debugger
-				if (text.quote === myFullText) {
+				if (text.quote === myText) {
 					setIsFinished(true)
 					return
 				}
-				correct = text.quote.indexOf(myFullText) === 0
-				console.log(correct)
+				setMyFullText(myText)
+				correct = text.quote.indexOf(myText) === 0
 				break
 		}
 		setIsCorrect(correct)
-	}, [myWord, myFullText]) // Maybe this is bad only "TEXT"
+	}, [myText]) // Maybe this is bad only "TEXT"
 
 	useEffect(() => {
 		socket.emit("update-progress", { progress: user.progress, username })
@@ -97,7 +95,7 @@ const Race: React.FC<Props> = ({ socket, username }) => {
 	const newQuote = async () => {
 		//TODO: make a timer for when you stanrt and you finish
 		setMyFullText("")
-		setMyWord("")
+		setMyText("")
 		const newQuote = await getNewQuote()
 		setText({ ...text, quote: newQuote })
 		focus()
@@ -134,18 +132,18 @@ const Race: React.FC<Props> = ({ socket, username }) => {
 					isCorrect={isCorrect}
 					isFinished={isFinished}
 					myFullText={myFullText}
-					myWord={myWord}
-					setMyWord={setMyWord}
+					myText={myText}
+					setMyText={setMyText}
 					text={text}
 				/>
 			) : (
 				<FreeEditor
 					input={input}
 					text={text}
-					myFullText={myFullText}
+					myText={myText}
 					isCorrect={isCorrect}
 					isFinished={isFinished}
-					setMyFullText={setMyFullText}
+					setMyText={setMyText}
 				/>
 			)}
 			<ProgressBar className="bar" now={user.progress} />

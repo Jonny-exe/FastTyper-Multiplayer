@@ -4,8 +4,8 @@ import { Text } from "./types"
 
 interface Props {
 	text: Text
-	myFullText: string
-	setMyFullText: (newText: string) => void
+	myText: string
+	setMyText: (newText: string) => void
 	isFinished: boolean
 	isCorrect: boolean
 	input: any
@@ -13,21 +13,20 @@ interface Props {
 const FreeEditor: React.FC<Props> = ({
 	text,
 	isFinished,
-	myFullText,
-	setMyFullText,
+	myText,
+	setMyText,
 	isCorrect,
 	input,
 }) => {
 	return (
 		<Form.Group controlId="exampleForm.ControlmyTextarea1">
 			<Form.Label>
-				{" "}
-				<h2>{text.quote}</h2>{" "}
+				<h2>{text.quote}</h2>
 			</Form.Label>
 			<Form.Control
 				readOnly={isFinished}
-				value={myFullText}
-				onChange={(e: any) => setMyFullText(e.target.value)}
+				value={myText}
+				onChange={(e: any) => setMyText(e.target.value)}
 				as="textarea"
 				className={`${isFinished ? "" : isCorrect ? "correct" : "incorrect"}`}
 				rows={3}

@@ -8,8 +8,8 @@ interface Props {
 	input: any
 	isFinished: boolean
 	isCorrect: boolean
-	myWord: string
-	setMyWord: (newWord: string) => void
+	myText: string
+	setMyText: (newWord: string) => void
 }
 
 const WordEditor: React.FC<Props> = ({
@@ -18,8 +18,8 @@ const WordEditor: React.FC<Props> = ({
 	input,
 	isFinished,
 	isCorrect,
-	myWord,
-	setMyWord,
+	myText,
+	setMyText,
 }) => {
 	return (
 		<Form.Group controlId="exampleForm.ControlmyTextarea1">
@@ -32,8 +32,8 @@ const WordEditor: React.FC<Props> = ({
 			</Form.Label>
 			<Form.Control
 				readOnly={isFinished}
-				value={myWord}
-				onChange={(e) => setMyWord(e.target.value)}
+				value={myText}
+				onChange={(e) => setMyText(e.target.value)}
 				as="textarea"
 				size="lg"
 				className={`${isFinished ? "" : isCorrect ? "correct" : "incorrect"}`}
