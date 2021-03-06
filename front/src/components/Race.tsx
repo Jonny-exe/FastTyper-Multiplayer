@@ -1,28 +1,15 @@
 import React, { useEffect, useRef, useState, useMemo } from "react"
-import Form from "react-bootstrap/esm/Form"
 import Button from "react-bootstrap/esm/Button"
 import { getNewQuote } from "../requests"
 import ProgressBar from "react-bootstrap/esm/ProgressBar"
+import WordEditor from "./WordEditor"
+import FreeEditor from "./FreeEditor"
+import { Self, Text, User } from "./types"
+import Form from "react-bootstrap/esm/Form"
 
 interface Props {
 	socket: any
 	username: string
-}
-
-interface User {
-	username: string
-	progress: number
-}
-
-interface Text {
-	quote: string
-	lider: string
-}
-
-interface Self {
-	username: string
-	progress: number
-	isLider: boolean
 }
 
 const Race: React.FC<Props> = ({ socket, username }) => {
@@ -39,6 +26,7 @@ const Race: React.FC<Props> = ({ socket, username }) => {
 	const [isCorrect, setIsCorrect] = useState<boolean>(true)
 	const [isFinished, setIsFinished] = useState<boolean>(false)
 	const [users, setUsers] = useState<User[]>([])
+	const [editorType, setEditorType] = useState<string>("word")
 
 	const focus = () => {
 		input.current.focus()
@@ -65,23 +53,38 @@ const Race: React.FC<Props> = ({ socket, username }) => {
 
 	useEffect(() => {
 		//TODO: make this cleaner
-		if (text.quote === myFullText + myWord) {
-			setMyFullText((myFullText) => myFullText + myWord)
-			setIsFinished(true)
-			return
-		}
+		let correct: boolean = false
+		switch (editorType) {
+			case "word":
+				const writtenText = myFullText + myWord
+				if (text.quote === writtenText) {
+					setMyFullText((myFullText) => myFullText + myWord)
+					setIsFinished(true)
+					return
+				}
+				if (
+					myWord[myWord.length - 1] === " " &&
+					text.quote.indexOf(writtenText) === 0
+				) {
+					setMyFullText((myFullText) => myFullText + myWord)
+					setMyWord("")
+				}
+				correct = text.quote.indexOf(writtenText) === 0
+				setIsCorrect(correct)
+				break
 
-		if (
-			myWord[myWord.length - 1] === " " &&
-			text.quote.indexOf(myFullText + myWord) === 0
-		) {
-			setMyFullText((myFullText) => myFullText + myWord)
-			setMyWord("")
+			case "free":
+				debugger
+				if (text.quote === myFullText) {
+					setIsFinished(true)
+					return
+				}
+				correct = text.quote.indexOf(myFullText) === 0
+				console.log(correct)
+				break
 		}
-
-		let correct = text.quote.indexOf(myFullText + myWord) === 0
 		setIsCorrect(correct)
-	}, [myWord]) // Maybe this is bad only "TEXT"
+	}, [myWord, myFullText]) // Maybe this is bad only "TEXT"
 
 	useEffect(() => {
 		socket.emit("update-progress", { progress: user.progress, username })
@@ -118,34 +121,33 @@ const Race: React.FC<Props> = ({ socket, username }) => {
 		const progress = Math.floor(
 			isFinished
 				? 100
-				: (100 * (myFullText.split(" ").length - 1)) /
-						text.quote.split(" ").length
+				: (100 * (myFullText.split(" ").length - 1)) / text.quote.split(" ").length
 		)
 		setUser({ ...user, progress })
 	}, [myFullText, text.quote, isFinished])
 
 	return (
 		<div className="race">
-			<Form.Group controlId="exampleForm.ControlmyTextarea1">
-				<Form.Label>
-					<h2>
-						{text.quote.substring(0, myFullText.length)}
-						<span className="word">|</span>
-						{text.quote.substring(myFullText.length, text.quote.length)}
-					</h2>
-				</Form.Label>
-				<Form.Control
-					readOnly={isFinished}
-					value={myWord}
-					onChange={(e: any) => setMyWord(e.target.value)}
-					as="textarea"
-					size="lg"
-					className={`${isFinished ? "" : isCorrect ? "correct" : "incorrect"}`}
-					rows={1}
-					ref={input}
+			{editorType === "word" ? (
+				<WordEditor
+					input={input}
+					isCorrect={isCorrect}
+					isFinished={isFinished}
+					myFullText={myFullText}
+					myWord={myWord}
+					setMyWord={setMyWord}
+					text={text}
 				/>
-			</Form.Group>
-
+			) : (
+				<FreeEditor
+					input={input}
+					text={text}
+					myFullText={myFullText}
+					isCorrect={isCorrect}
+					isFinished={isFinished}
+					setMyFullText={setMyFullText}
+				/>
+			)}
 			<ProgressBar className="bar" now={user.progress} />
 			<Button
 				disabled={!user.isLider || !haveUsersFinished}
@@ -155,6 +157,18 @@ const Race: React.FC<Props> = ({ socket, username }) => {
 				New quote
 			</Button>
 			{isFinished ? <h1> GG </h1> : null}
+			<Form.Group controlId="exampleForm.SelectCustom">
+				<Form.Label>Select input type</Form.Label>
+				<Form.Control
+					onChange={(e) => setEditorType(e.target.value)}
+					value={editorType}
+					as="select"
+					custom
+				>
+					<option value="word">Word</option>
+					<option value="free">Full</option>
+				</Form.Control>
+			</Form.Group>
 			<hr></hr>
 			{users.map(({ username: name, progress }: User, index: number) =>
 				username === name ? null : (

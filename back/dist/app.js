@@ -157,25 +157,19 @@ io.on("connection", function (socket) {
 					console.log(username + " connected")
 					return [
 						4 /*yield*/,
-						db_1.query(
-							"insert into users (username, progress) values ($1, 0)",
-							[username]
-						),
+						db_1.query("insert into users (username, progress) values ($1, 0)", [
+							username,
+						]),
 					]
 				case 1:
 					_a.sent()
-					return [
-						4 /*yield*/,
-						db_1.query("select username, progress from users"),
-					]
+					return [4 /*yield*/, db_1.query("select username, progress from users")]
 				case 2:
 					users = _a.sent()
 					if (!(users.length === 1)) return [3 /*break*/, 4]
 					return [
 						4 /*yield*/,
-						db_1.query("update text set lider = $1::text, quote = ''", [
-							username,
-						]),
+						db_1.query("update text set lider = $1::text, quote = ''", [username]),
 					]
 				case 3:
 					_a.sent()
@@ -239,10 +233,9 @@ io.on("connection", function (socket) {
 									case 0:
 										return [
 											4 /*yield*/,
-											db_1.query(
-												"delete from users where username = $1::text",
-												[username]
-											),
+											db_1.query("delete from users where username = $1::text", [
+												username,
+											]),
 										]
 									case 1:
 										_a.sent()
@@ -250,19 +243,16 @@ io.on("connection", function (socket) {
 										if (!(isLider == true)) return [3 /*break*/, 4]
 										return [
 											4 /*yield*/,
-											db_1.query(
-												"select username from users where username <> $1::text",
-												[username]
-											),
+											db_1.query("select username from users where username <> $1::text", [
+												username,
+											]),
 										]
 									case 2:
 										newLider = _a.sent()
 										newLider = newLider.length > 0 ? newLider[0].username : ""
 										return [
 											4 /*yield*/,
-											db_1.query("update text set lider = $1::text", [
-												newLider,
-											]),
+											db_1.query("update text set lider = $1::text", [newLider]),
 										]
 									case 3:
 										_a.sent()
