@@ -1,11 +1,9 @@
 import React, { useEffect, useRef, useState, useMemo } from "react"
-import Button from "react-bootstrap/esm/Button"
 import { getNewQuote } from "../requests"
-import ProgressBar from "react-bootstrap/esm/ProgressBar"
 import WordEditor from "./EditorWord"
 import FreeEditor from "./EditorFree"
 import { Self, Text, User } from "./types"
-import Form from "react-bootstrap/esm/Form"
+import ProgressBar from "./ProgressBar"
 
 interface Props {
 	socket: any
@@ -146,26 +144,20 @@ const Race: React.FC<Props> = ({ socket, username }) => {
 				/>
 			)}
 			<ProgressBar className="bar" now={user.progress} />
-			<Button
-				disabled={!user.isLider || !haveUsersFinished}
+			<button
+				className={`${!user.isLider || !haveUsersFinished ? "disabled" : ""}`}
 				onClick={newQuote}
-				variant="primary"
 			>
 				New quote
-			</Button>
+			</button>
 			{isFinished ? <h1> GG </h1> : null}
-			<Form.Group controlId="exampleForm.SelectCustom">
-				<Form.Label>Select input type</Form.Label>
-				<Form.Control
-					onChange={(e) => setEditorType(e.target.value)}
-					value={editorType}
-					as="select"
-					custom
-				>
+			<div>
+				<h3>Select input type</h3>
+				<select onChange={(e) => setEditorType(e.target.value)} value={editorType}>
 					<option value="word">Word</option>
 					<option value="free">Full</option>
-				</Form.Control>
-			</Form.Group>
+				</select>
+			</div>
 			<hr></hr>
 			{users.map(({ username: name, progress }: User, index: number) =>
 				username === name ? null : (

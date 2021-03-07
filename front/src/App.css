@@ -1,69 +1,84 @@
 .App {
 	/* font-family: Arial, Helvetica, sans-serif; */
 	text-align: center;
-	border-color: grey;
 	/* --primaryColor: rgba(46, 46, 46, 0.938); */
-	/* -webkit-appearance: none; */
+	--blue: #1672fd;
+	--lightBlue: #4890fb;
+	--anotherBlue: #78acef;
+	--animation-speed: 0.2s;
+	--grey: #e9ecef;
+	-webkit-appearance: none;
 }
 
-/* .submit::-moz-focus-inner {
-  border: 0;
+select {
+	/* for Firefox */
+	-moz-appearance: none;
+	/* for Chrome */
+	-webkit-appearance: none;
 }
 
-.show {
-  display: inherit;
+/* For IE10 */
+select::-ms-expand {
+	display: none;
 }
 
-.hide {
-  display: none;
-}
-
-/* Base elements */
-
-/* select, input, button {
-  border-width: 0px;
-}
-
-button {
-  font-size: inherit;
-  height: 3vmax;
-  color: white;
-  border-radius: 3px;
-  border-color: black;
-  border-width: 2px;
-  background-color: var(--primaryColor);
-  cursor: pointer;
-  margin: 1%;
-  transition-duration: .5s;
-}
-
-button:hover {
-  color: var(--primaryColor);
-  background-color: white;
-}
-
-::placeholder {
-  color: white;
-}
-
-input {
-  font-size: inherit;
-  height: 3vmax;
-  color: white;
-  border-radius: 2px;
-  border-color: black;
-  border-width: 2px;
-  background-color: var(--primaryColor);
-  margin: 1%;
-  transition-duration: .5s;
-}
+/* Base */
 
 input:focus {
-  color: var(--primaryColor);
-  background-color: white;
+	outline: none;
 }
 
-/* Base end */
+textarea {
+	padding: 0% 1%;
+	padding-top: 0.5%;
+	line-height: 150%;
+	resize: none;
+	width: 100%;
+	font-size: 200%;
+}
+
+input,
+textarea {
+	transition-duration: var(--animation-speed);
+	border-color: var(--blue);
+	border-width: 3px;
+	border-radius: 4px;
+	border-style: solid;
+}
+
+input:focus,
+textarea:focus {
+	box-shadow: 0px 0px 7px var(--lightBlue);
+}
+
+button,
+select {
+	line-height: 0.95;
+	outline: none;
+	border-color: var(--blue);
+	border-style: solid;
+	color: var(--blue);
+	border-width: 3px;
+	border-radius: 4px;
+	padding: 0.5%;
+	/* background-color: linear-gradient(45deg,  50%, var(--blue) 50%); */
+	background: linear-gradient(to left, #fff 50%, var(--blue) 50%);
+	/* -webkit-background-clip: text; */
+	background-size: 200% 100%;
+	/* background-position: right bottom; */
+	background-position: right top;
+	margin: 2%;
+	transition-duration: var(--animation-speed);
+}
+
+button:hover,
+select:hover {
+	color: white;
+	background-position: left bottom;
+	box-shadow: 0px 0px 7px var(--blue);
+}
+
+/* End base */
 
 div.login {
 	height: 100vh;
@@ -74,24 +89,25 @@ div.login {
 	justify-content: center;
 }
 
+div.loginInputs {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
 div.race {
 	padding: 1%;
 }
 
-/*
-
-button.login, input.login {
-  display: inline-block;
-  font-size: 20px;
-  border: 1px solid black;
-  border: none;
-  margin: 0%;
-  -webkit-appearance: none;
-*/
-
 .correct,
 .correct:focus {
 	background-color: rgb(96, 246, 96);
+}
+
+.disabled {
+	pointer-events: none;
+	opacity: 0.7;
 }
 
 .incorrect,
@@ -107,10 +123,6 @@ button.login, input.login {
 	background-color: #e2e2e2;
 	padding: 0.2%;
 	border-radius: 6px;
-}
-
-textarea {
-	font-size: 200% !important;
 }
 
 .progress {

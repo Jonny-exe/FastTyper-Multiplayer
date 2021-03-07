@@ -1,7 +1,4 @@
 import React, { useState } from "react"
-import Button from "react-bootstrap/Button"
-import FormControl from "react-bootstrap/FormControl"
-import InputGroup from "react-bootstrap/InputGroup"
 
 interface Props {
 	socket: any
@@ -21,20 +18,14 @@ const Login: React.FC<Props> = ({ socket, setAuthorized, setUsername }) => {
 		<div className="login">
 			<h1> Please insert your username: </h1>
 			<form onSubmit={login}>
-				<InputGroup className="mb-3">
-					<FormControl
+				<div className="loginInputs">
+					<input
+						type="text"
 						placeholder="Username"
-						aria-label="Username"
-						aria-describedby="basic-addon2"
 						value={name}
-						onChange={(e: any) => setName(e.target.value)}
+						onChange={(e) => setName(e.target.value)}
 					/>
-					<InputGroup.Append>
-						<Button variant="outline-secondary" type="submit">
-							Login
-						</Button>
-					</InputGroup.Append>
-				</InputGroup>
+				</div>
 			</form>
 		</div>
 	)

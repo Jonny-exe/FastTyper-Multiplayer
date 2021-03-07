@@ -1,5 +1,4 @@
 import React from "react"
-import Form from "react-bootstrap/esm/Form"
 import { Text } from "./types"
 
 interface Props {
@@ -39,8 +38,8 @@ const WordEditor: React.FC<Props> = ({
 	const [startCursor, finishCursor] = getWordRange
 
 	return (
-		<Form.Group controlId="exampleForm.ControlmyTextarea1">
-			<Form.Label>
+		<>
+			<div className="editor">
 				<h2 className="text">
 					{
 						<>
@@ -52,18 +51,16 @@ const WordEditor: React.FC<Props> = ({
 						</>
 					}
 				</h2>
-			</Form.Label>
-			<Form.Control
-				readOnly={isFinished}
-				value={myText}
-				onChange={(e) => setMyText(e.target.value)}
-				as="textarea"
-				size="lg"
-				className={`${isFinished ? "" : isCorrect ? "correct" : "incorrect"}`}
-				rows={1}
-				ref={input}
-			/>
-		</Form.Group>
+				<textarea
+					readOnly={isFinished}
+					value={myText}
+					onChange={(e) => setMyText(e.target.value)}
+					className={`${isFinished ? "" : isCorrect ? "correct" : "incorrect"}`}
+					rows={1}
+					ref={input}
+				/>
+			</div>
+		</>
 	)
 }
 

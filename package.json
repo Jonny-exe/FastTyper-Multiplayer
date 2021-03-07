@@ -1,31 +1,29 @@
 {
-  "dependencies": {
-    "@commitlint/cli": "^12.0.1",
-    "@commitlint/config-conventional": "^12.0.1",
-    "bootstrap": "^4.6.0",
-    "global": "^4.4.0",
-    "husky": "^5.1.1",
-    "prettier": "^2.2.1",
-    "pretty-quick": "^3.1.0",
-    "react-bootstrap": "^1.5.0"
-  },
-  "scripts": {
-    "pretty-quick": "pretty-quick",
-    "setup": "./setup.sh",
-    "postinstall": "husky install"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "pretty-quick --staged"
-    }
-  },
-  "name": "fasttyper-multiplayer",
-  "version": "1.0.0",
-  "main": "index.js",
-  "repository": "https://github.com/Jonny-exe/fasttyper-multiplayer.git",
-  "author": "Jonny-exe <69385502+Jonny-exe@users.noreply.github.com>",
-  "license": "MIT",
-  "devDependencies": {
-    "nodemon": "^2.0.7"
-  }
+	"dependencies": {
+		"@commitlint/cli": "^12.0.1",
+		"@commitlint/config-conventional": "^12.0.1",
+		"global": "^4.4.0",
+		"husky": "^5.1.1",
+		"prettier": "^2.2.1",
+		"pretty-quick": "^3.1.0"
+	},
+	"scripts": {
+		"pretty-quick": "pretty-quick",
+		"setup": "./setup.sh",
+		"postinstall": "husky install"
+	},
+	"husky": {
+		"hooks": {
+			"pre-commit": "pretty-quick --staged"
+		}
+	},
+	"name": "fasttyper-multiplayer",
+	"version": "1.0.0",
+	"main": "index.js",
+	"repository": "https://github.com/Jonny-exe/fasttyper-multiplayer.git",
+	"author": "Jonny-exe <69385502+Jonny-exe@users.noreply.github.com>",
+	"license": "MIT",
+	"devDependencies": {
+		"nodemon": "^2.0.7"
+	}
 }
