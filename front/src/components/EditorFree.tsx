@@ -21,7 +21,7 @@ const FreeEditor: React.FC<Props> = ({
 	return (
 		<Form.Group controlId="exampleForm.ControlmyTextarea1">
 			<Form.Label>
-				<h2>{text.quote}</h2>
+				<h2 className="text">{text.quote}</h2>
 			</Form.Label>
 			<Form.Control
 				readOnly={isFinished}

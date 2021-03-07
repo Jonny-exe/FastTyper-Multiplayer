@@ -104,7 +104,9 @@ button.login, input.login {
 }
 
 .word {
-	background-color: rgb(96, 246, 96);
+	background-color: #e2e2e2;
+	padding: 0.2%;
+	border-radius: 6px;
 }
 
 textarea {
@@ -118,4 +120,8 @@ textarea {
 
 h2 {
 	text-align: left;
+}
+
+h2.text {
+	word-spacing: 1px;
 }

@@ -2,8 +2,8 @@ import React, { useEffect, useRef, useState, useMemo } from "react"
 import Button from "react-bootstrap/esm/Button"
 import { getNewQuote } from "../requests"
 import ProgressBar from "react-bootstrap/esm/ProgressBar"
-import WordEditor from "./WordEditor"
-import FreeEditor from "./FreeEditor"
+import WordEditor from "./EditorWord"
+import FreeEditor from "./EditorFree"
 import { Self, Text, User } from "./types"
 import Form from "react-bootstrap/esm/Form"
 
@@ -53,7 +53,6 @@ const Race: React.FC<Props> = ({ socket, username }) => {
 
 	useEffect(() => {
 		let correct: boolean = false
-		debugger
 		switch (editorType) {
 			case "word":
 				const writtenText = myFullText + myText
