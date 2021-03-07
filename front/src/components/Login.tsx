@@ -16,17 +16,20 @@ const Login: React.FC<Props> = ({ socket, setAuthorized, setUsername }) => {
 	}
 	return (
 		<div className="login">
-			<h1> Please insert your username: </h1>
-			<form onSubmit={login}>
-				<div className="loginInputs">
-					<input
-						type="text"
-						placeholder="Username"
-						value={name}
-						onChange={(e) => setName(e.target.value)}
-					/>
-				</div>
-			</form>
+			<h1> Welcome to fasttyper</h1>
+			<div className="loginWrapper">
+				<h2 className="login"> Please insert your username: </h2>
+				<form onSubmit={login}>
+					<div className="loginInputs">
+						<input
+							type="text"
+							placeholder="Username"
+							value={name}
+							onChange={(e) => setName(e.target.value)}
+						/>
+					</div>
+				</form>
+			</div>
 		</div>
 	)
 }

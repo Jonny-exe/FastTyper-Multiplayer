@@ -10,6 +10,10 @@
 	-webkit-appearance: none;
 }
 
+form {
+	margin: 1%;
+}
+
 select {
 	/* for Firefox */
 	-moz-appearance: none;
@@ -87,6 +91,17 @@ div.login {
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
+}
+
+h2.login {
+	margin-bottom: 10%;
+}
+
+div.loginWrapper {
+	padding: 10%;
+	border-radius: 10px;
+	box-shadow: 0px 0px 20px black;
+	margin: 5%;
 }
 
 div.loginInputs {
