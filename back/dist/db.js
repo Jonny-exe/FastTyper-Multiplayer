@@ -154,6 +154,10 @@ var setup = function () {
 					return console.error("connection error", err.stack)
 				})
 			client.query("SELECT NOW()")
+			client.query(
+				"create table if not exists users (username text, progress smallint)"
+			)
+			client.query("create table if not exists text (lider text, quote text)")
 			return [2 /*return*/]
 		})
 	})
