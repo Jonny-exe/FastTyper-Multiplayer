@@ -8,21 +8,21 @@ import SOCKET_URL, { CREDENTIALS } from "./env"
 const socket = io(SOCKET_URL, CREDENTIALS)
 
 const App = () => {
-  const [isAuthorized, setAuthorized] = useState(false)
-  const [username, setUsername] = React.useState<string>("")
-  return (
-    <div className="App">
-      {isAuthorized ? (
-        <Race socket={socket} username={username} />
-      ) : (
-        <Login
-          socket={socket}
-          setUsername={setUsername}
-          setAuthorized={setAuthorized}
-        />
-      )}
-    </div>
-  )
+	const [isAuthorized, setAuthorized] = useState(false)
+	const [username, setUsername] = React.useState<string>("")
+	return (
+		<div className="App">
+			{isAuthorized ? (
+				<Race socket={socket} username={username} />
+			) : (
+				<Login
+					socket={socket}
+					setUsername={setUsername}
+					setAuthorized={setAuthorized}
+				/>
+			)}
+		</div>
+	)
 }
 
 export default App
