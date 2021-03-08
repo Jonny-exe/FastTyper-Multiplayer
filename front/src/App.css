@@ -184,6 +184,68 @@ h2.text {
 	word-spacing: 1px;
 }
 
+@keyframes congratulations {
+	from {
+		transform: scale(0);
+	}
+	to {
+		transform: scale(1);
+	}
+}
+
+h1.congratulations {
+	animation: congratulations var(--animation-speed);
+}
+
+div.congratulations {
+	background: var(--blue);
+	padding: 0% 0%;
+	margin: 1% 0%;
+}
+
+h1.congratulations {
+	margin: 0% 0%;
+	/* border: 2px solid white; */
+	background: transparent;
+	text-transform: uppercase;
+	color: white;
+	/* padding: 15px 50px; */
+	outline: none;
+	overflow: hidden;
+	position: relative;
+}
+
+h1.congratulations:after {
+	content: "";
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 0%;
+	height: 200%;
+	background-color: rgba(255, 255, 255, 0.4);
+	-webkit-transition: none;
+	-moz-transition: none;
+	-ms-transition: none;
+	-o-transition: none;
+	transition: none;
+	transform: rotate(-45deg);
+}
+
+h1.congratulations:hover:after {
+	width: 200%;
+	background-color: rgba(255, 255, 255, 0);
+	-webkit-transition: all 0.3s ease-out;
+	-moz-transition: all 0.3s ease-out;
+	-ms-transition: all 0.3s ease-out;
+	-o-transition: all 0.3s ease-out;
+	transition: all 0.5s ease-out;
+}
+
+div.congratulations {
+	border: solid var(--blue);
+	border-radius: 4px;
+}
+
 @keyframes changeEditor {
 	0% {
 		background-color: white;

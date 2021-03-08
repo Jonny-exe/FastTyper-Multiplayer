@@ -150,7 +150,11 @@ const Race: React.FC<Props> = ({ socket, username }) => {
 			>
 				New quote
 			</button>
-			{isFinished ? <h1> GG </h1> : null}
+			{isFinished && text.quote !== "" ? (
+				<div className="congratulations">
+					<h1 className="congratulations"> GG </h1>
+				</div>
+			) : null}
 			<div>
 				<h3>Select input type</h3>
 				{/* <select onChange={(e) => setEditorType(e.target.value)} value={editorType}>
