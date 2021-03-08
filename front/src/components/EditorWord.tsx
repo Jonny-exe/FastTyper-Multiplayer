@@ -40,17 +40,19 @@ const WordEditor: React.FC<Props> = ({
 	return (
 		<>
 			<div className="editor">
-				<h2 className="text">
-					{
-						<>
-							{text.quote.substring(0, startCursor)}
-							<span className="word" style={isFinished ? { display: "none" } : {}}>
-								{text.quote.substring(startCursor, finishCursor)}
-							</span>
-							{text.quote.substring(finishCursor, text.quote.length)}
-						</>
-					}
-				</h2>
+				<div className="text">
+					<h2 className="text">
+						{
+							<>
+								{text.quote.substring(0, startCursor)}
+								<span className="word" style={isFinished ? { display: "none" } : {}}>
+									{text.quote.substring(startCursor, finishCursor)}
+								</span>
+								{text.quote.substring(finishCursor, text.quote.length)}
+							</>
+						}
+					</h2>
+				</div>
 				<textarea
 					readOnly={isFinished}
 					value={myText}

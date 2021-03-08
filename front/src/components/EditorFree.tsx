@@ -19,7 +19,9 @@ const FreeEditor: React.FC<Props> = ({
 }) => {
 	return (
 		<div className="editor">
-			<h2 className="text">{text.quote}</h2>
+			<div className="text">
+				<h2 className="text">{text.quote}</h2>
+			</div>
 			<textarea
 				readOnly={isFinished}
 				value={myText}

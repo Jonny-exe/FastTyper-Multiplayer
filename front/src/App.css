@@ -4,7 +4,7 @@
 	/* --primaryColor: rgba(46, 46, 46, 0.938); */
 	--blue: #1672fd;
 	--lightBlue: #4890fb;
-	--anotherBlue: #78acef;
+	--anotherBlue: #388eff;
 	--animation-speed: 0.2s;
 	--animation-speed-slow: 0.7s;
 	--grey: #e9ecef;
@@ -161,7 +161,7 @@ div.race {
 }
 
 .word {
-	background-color: #e2e2e2;
+	background-color: var(--anotherBlue);
 	padding: 0.2%;
 	border-radius: 6px;
 }
@@ -180,8 +180,19 @@ h2 {
 	text-align: left;
 }
 
+div.text {
+	box-shadow: 0px 0px 10px var(--lightBlue);
+	border: solid var(--blue) 1px;
+	border-radius: 3px;
+	background: var(--blue);
+	padding: 1%;
+	margin: 1% 0%;
+}
+
 h2.text {
+	color: white;
 	word-spacing: 1px;
+	padding: 0% 1%;
 }
 
 @keyframes congratulations {
