@@ -6,6 +6,7 @@
 	--lightBlue: #4890fb;
 	--anotherBlue: #78acef;
 	--animation-speed: 0.2s;
+	--animation-speed-slow: 0.7s;
 	--grey: #e9ecef;
 	--darkGrey: rgb(230, 230, 230);
 	-webkit-appearance: none;
@@ -23,23 +24,16 @@ select {
 }
 
 /* For IE10 */
+
 select::-ms-expand {
 	display: none;
 }
 
 /* Base */
 
-input:focus {
+input:focus,
+textarea:focus {
 	outline: none;
-}
-
-textarea {
-	padding: 0% 1%;
-	padding-top: 0.5%;
-	line-height: 150%;
-	resize: none;
-	width: 100%;
-	font-size: 200%;
 }
 
 input,
@@ -51,36 +45,67 @@ textarea {
 	border-style: solid;
 }
 
+textarea {
+	padding: 0% 1%;
+	padding-top: 0.5%;
+	line-height: 150%;
+	resize: none;
+	width: 100%;
+	font-size: 200%;
+	/* transition: height 10s; */
+}
+
 input:focus,
 textarea:focus {
 	box-shadow: 0px 0px 7px var(--lightBlue);
+}
+
+option {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	background: var(--blue);
 }
 
 button,
 select {
 	line-height: 0.95;
 	outline: none;
+	cursor: pointer;
 	border-color: var(--blue);
 	border-style: solid;
 	color: var(--blue);
 	border-width: 3px;
 	border-radius: 4px;
 	padding: 0.5%;
-	/* background-color: linear-gradient(45deg,  50%, var(--blue) 50%); */
 	background: linear-gradient(to left, #fff 50%, var(--blue) 50%);
-	/* -webkit-background-clip: text; */
 	background-size: 200% 100%;
-	/* background-position: right bottom; */
 	background-position: right top;
 	margin: 2%;
 	transition-duration: var(--animation-speed);
 }
 
+button.disabled,
+select.disbled {
+	background: linear-gradient(to left, #fff 50%, var(--darkGrey) 50%);
+	background-size: 200% 100%;
+	background-position: right top;
+}
+
 button:hover,
-select:hover {
+select:hover,
+button:focus,
+select:focus {
 	color: white;
 	background-position: left bottom;
 	box-shadow: 0px 0px 7px var(--blue);
+}
+
+button:hover.disabled,
+button:focus.disabled,
+select:hover.disabled,
+select:focus.disabled {
+	box-shadow: 0px 0px 7px var(--darkGrey);
 }
 
 /* End base */
@@ -123,7 +148,7 @@ div.race {
 
 .disabled {
 	pointer-events: none;
-	border-color: var(--darkGrey);
+	border-color: var(--darkGrey) !important;
 }
 
 .incorrect,
@@ -157,4 +182,27 @@ h2 {
 
 h2.text {
 	word-spacing: 1px;
+}
+
+@keyframes changeEditor {
+	0% {
+		background-color: white;
+		color: black;
+	}
+	50% {
+		background-color: var(--blue);
+		color: var(--blue);
+	}
+	100% {
+		background-color: white;
+		color: black;
+	}
+}
+
+textarea.editorWord {
+	animation: changeEditor var(--animation-speed-slow);
+}
+
+textarea.editorFree {
+	animation: changeEditor var(--animation-speed-slow);
 }

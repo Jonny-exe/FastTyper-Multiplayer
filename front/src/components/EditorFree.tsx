@@ -24,7 +24,9 @@ const FreeEditor: React.FC<Props> = ({
 				readOnly={isFinished}
 				value={myText}
 				onChange={(e: any) => setMyText(e.target.value)}
-				className={`${isFinished ? "" : isCorrect ? "correct" : "incorrect"}`}
+				className={`editorFree ${
+					isFinished ? "" : isCorrect ? "correct" : "incorrect"
+				}`}
 				rows={3}
 				ref={input}
 			/>

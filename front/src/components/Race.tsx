@@ -153,10 +153,16 @@ const Race: React.FC<Props> = ({ socket, username }) => {
 			{isFinished ? <h1> GG </h1> : null}
 			<div>
 				<h3>Select input type</h3>
-				<select onChange={(e) => setEditorType(e.target.value)} value={editorType}>
+				{/* <select onChange={(e) => setEditorType(e.target.value)} value={editorType}>
 					<option value="word">Word</option>
 					<option value="free">Full</option>
-				</select>
+				</select> */}
+				<button
+					onClick={() => setEditorType(editorType === "word" ? "free" : "word")}
+				>
+					{" "}
+					{editorType}{" "}
+				</button>
 			</div>
 			<hr></hr>
 			{users.map(({ username: name, progress }: User, index: number) =>

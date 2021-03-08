@@ -55,7 +55,9 @@ const WordEditor: React.FC<Props> = ({
 					readOnly={isFinished}
 					value={myText}
 					onChange={(e) => setMyText(e.target.value)}
-					className={`${isFinished ? "" : isCorrect ? "correct" : "incorrect"}`}
+					className={`editorWord ${
+						isFinished ? "" : isCorrect ? "correct" : "incorrect"
+					}`}
 					rows={1}
 					ref={input}
 				/>
