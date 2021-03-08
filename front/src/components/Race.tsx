@@ -143,7 +143,7 @@ const Race: React.FC<Props> = ({ socket, username }) => {
 					setMyText={setMyText}
 				/>
 			)}
-			<ProgressBar className="bar" now={user.progress} />
+			<ProgressBar progress={user.progress} />
 			<button
 				className={`${!user.isLider || !haveUsersFinished ? "disabled" : ""}`}
 				onClick={newQuote}
@@ -163,7 +163,7 @@ const Race: React.FC<Props> = ({ socket, username }) => {
 				username === name ? null : (
 					<div key={index}>
 						<h2> Username: {name} </h2>
-						<ProgressBar className="bar" now={progress} />
+						<ProgressBar progress={progress} />
 					</div>
 				)
 			)}

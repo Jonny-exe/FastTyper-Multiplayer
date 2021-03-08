@@ -7,6 +7,7 @@
 	--anotherBlue: #78acef;
 	--animation-speed: 0.2s;
 	--grey: #e9ecef;
+	--darkGrey: rgb(230, 230, 230);
 	-webkit-appearance: none;
 }
 
@@ -122,7 +123,7 @@ div.race {
 
 .disabled {
 	pointer-events: none;
-	opacity: 0.7;
+	border-color: var(--darkGrey);
 }
 
 .incorrect,
@@ -141,8 +142,13 @@ div.race {
 }
 
 .progress {
-	margin-left: 0%;
-	margin-right: 0%;
+	margin: 0;
+	background-color: var(--blue);
+	transition-duration: var(--animation-speed);
+}
+
+.progressWrapper {
+	margin: 1% 0%;
 }
 
 h2 {

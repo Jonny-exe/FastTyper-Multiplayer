@@ -1,10 +1,14 @@
 import React from "react"
 
-const ProgressBar = (Props: any) => {
+interface Props {
+	progress: number
+}
+
+const ProgressBar: React.FC<Props> = ({ progress }) => {
 	return (
-		<>
-			<div></div>
-		</>
+		<div className="progressWrapper">
+			<div className="progress" style={{ width: `${progress}%` }}></div>
+		</div>
 	)
 }
 
